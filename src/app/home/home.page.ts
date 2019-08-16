@@ -44,22 +44,72 @@ export class HomePage {
 
     public createPdfxxxx() {
         console.log('CRAEEsssssT PDF');
+        let layout = {
+            exampleLayout: {
+              hLineWidth: function (i, node) {
+                if (i === 0 || i === node.table.body.length) {
+                  return 0;
+                }
+                return (i === node.table.headerRows) ? 2 : 1;
+              },
+              vLineWidth: function (i) {
+                return 0;
+              },
+              hLineColor: function (i) {
+                return i === 1 ? 'black' : '#aaa';
+              },
+              paddingLeft: function (i) {
+                return i === 0 ? 0 : 8;
+              },
+              paddingRight: function (i, node) {
+                return (i === node.table.widths.length - 1) ? 0 : 8;
+              }
+            }
+          };
         let doc: any = {
             content: [
-                {text: 'REMINDER', style: 'header'},
-                {text: new Date().toTimeString(), alignment: 'right'},
-                {text: 'From', style: 'subheader'},
-                {text: this.letterObj.from},
-                {text: 'To', style: 'subheader'},
-                this.letterObj.to,
-                {text: this.letterObj.text, style: 'story', margin: [0, 20, 0, 20]},
-                {
+                {text:'Santa Cruz 16/08/2019' + (new Date().toTimeString()), alignment:'right'},
+                {text:'Pedido No. 000551', alignment:'right'},
+                {text:'COMPROBANTE DE PEDIDO', alignment:'center', style:'header'},
+                {text:' ', alignment:'center'},
+                {text:' ', alignment:'center'},
+                {text:'Nombre: Alcides Avaroma R.'},
+                {text:'Telefono: (591)708-28708'},
+                {text:'Direccion: Av. Paragua B. CONAVI c. Cnel. A. Aimerich 3490'},
+                {text:' ', alignment:'center'},
+                {text:' ', alignment:'center'},
+                {layout: 'lightHorizontalLines', // optional
+                    table: {
+                        // headers are automatically repeated if the table spans over multiple pages
+                        // you can declare how many rows should be treated as headers
+                        headerRows: 1,
+                        widths: [ '*', 'auto', 100, '*', '*' ],
+
+                    body: [
+                      [ 'Item', 'Cant.', 'P/U', 'Desc.', 'total' ],
+                      [ 'Cigarrillo LM', '100', 'Bs.70.00', '00.00', '7000.00' ],
+                      [ 'Cigarrillo Camel', '50', 'Bs.100.00', '100.00', '4900.00' ],
+                      [ 'Cigarrillo Malboro', '100', 'Bs.80.00', '00.00', '8000.00' ],
+                      [ 'Cigarrillo Derby', '100', 'Bs.80.00', '00.00', '8000.00' ],
+                      [ 'Kolgerg', '100', 'Bs.70.00', '00.00', '7000.00' ],
+                      [ 'Chanceler', '50', 'Bs.100.00', '100.00', '4900.00' ],
+                      [ 'Chivas regal', '100', 'Bs.80.00', '00.00', '8000.00' ],
+                      [ 'JB', '100', 'Bs.80.00', '00.00', '8000.00' ],
+                      [ { text: 'TOTAL', bold: true }, '', '', '200.00', '55800.00' ]
+                    ]
+                }}
+                //{text: 'From', style: 'subheader'},
+                //{text: this.letterObj.from},
+                //{text: 'To', style: 'subheader'},
+                //this.letterObj.to,
+                //{text: this.letterObj.text, style: 'story', margin: [0, 20, 0, 20]},
+                /*{
                     ul: [
                         'Bacon',
                         'Rips',
                         'BBQ',
                     ]
-                }
+                }*/
             ],
             styles: {
                 header: {
@@ -78,7 +128,7 @@ export class HomePage {
                 }
             }
         };
-        this.pdfObj = pdfMake.createPdf(doc);
+        this.pdfObj = pdfMake.createPdf(doc,layout);
         console.log(this.pdfObj);
     }
 
